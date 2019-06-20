@@ -94,5 +94,13 @@ public interface IContactManagementDao {
 		 */
 		public ContactResponse updateCommunication(Contact contact);
 		
+		
+		/**
+		 * Delete contact details based on id.
+		 *
+		 * @param contact the contact
+		 * @return the contact response
+		 */
+		public ContactResponse deleteContactDetailsBasedOnId(Contact contact);
 
 }

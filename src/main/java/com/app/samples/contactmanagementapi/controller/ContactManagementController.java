@@ -121,4 +121,35 @@ public class ContactManagementController {
 		}
 		return responseEntity;
 	}
+	
+	/**
+	 * Delete contact details based on id.
+	 *
+	 * @param contact the contact
+	 * @return the response entity
+	 */
+	@RequestMapping(value="/deletecontactdetails", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<ContactResponse> deleteContactDetailsBasedOnId(@RequestBody Contact contact){
+		ContactResponse contactResponse = null;
+		ResponseEntity<ContactResponse> responseEntity = null;
+		BigDecimal id = null;
+		try {
+			if(contact != null) {
+				id = contact.getIdentification().getId();
+				logger.info("request for given id : "+id);
+				contactResponse = contactManagementService.deleteContactDetailsBasedOnId(contact);
+				responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.OK);
+			}
+		}
+		catch(DataAccessException dataAccessException) {
+			contactResponse = new ContactResponse();
+			contactResponse.setResponseMsg(RESPONSE_INTERNAL_SERVER_ERROR);
+			contactResponse.setResponseCode(RESPONSE_FAILED);
+			responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return responseEntity;
+	}
+	
+	
 }

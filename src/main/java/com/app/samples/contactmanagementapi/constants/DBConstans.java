@@ -198,5 +198,14 @@ public class DBConstans {
 	/** The Constant CONTACT_NOT_UPDATED. */
 	public static final String CONTACT_NOT_UPDATED = "Contact Details Not Updated Successfully";
 	
+	/** The Constant CONTACT_DELETED. */
+	public static final String CONTACT_DELETED = "Contact Details deleted successfully";
+	
+	/** The Constant RESPONSE_SUCCESS_STATUS. */
+	public static final String RESPONSE_SUCCESS_STATUS = "success";
+	
+	/** The Constant RESPONSE_FAIL_STATUS. */
+	public static final String RESPONSE_FAIL_STATUS = "failed";
+	
 	
 }

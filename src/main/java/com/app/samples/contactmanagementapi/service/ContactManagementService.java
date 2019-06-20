@@ -128,6 +128,23 @@ public class ContactManagementService implements IContactManagementService{
 				return contactResponse;
 	}
 
+	/**
+	 * Delete contact details based on id.
+	 *
+	 * @param contact the contact
+	 * @return the contact response
+	 */
+	@Override
+	public ContactResponse deleteContactDetailsBasedOnId(Contact contact) {
+		ContactResponse contactResponse = null;
+		if(contact != null) {
+			logger.info("Contact Request : "+contact.toString());
+			contactResponse = contactManagementDao.deleteContactDetailsBasedOnId(contact);
+		}
+		logger.info("contact Response after deleting Contact Details : "+contactResponse.toString());
+		return contactResponse;
+	}
+
 	
 
 }

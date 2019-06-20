@@ -20,6 +20,9 @@ public class ContactResponse {
 	@JsonProperty
 	private String actualResponse;
 	
+	@JsonProperty
+	private String responseStatus;
+	
 	/** The contact. */
 	@JsonProperty
 	private Contact contact;
@@ -31,21 +34,19 @@ public class ContactResponse {
 		super();
 	}
 
-	/**
-	 * Instantiates a new contact response.
-	 *
-	 * @param responseMsg the response msg
-	 * @param responseCode the response code
-	 * @param actualResponse the actual response
-	 * @param contact the contact
-	 */
-	public ContactResponse(String responseMsg, String responseCode, String actualResponse,Contact contact) {
+	
+
+	public ContactResponse(String responseMsg, String responseCode, String actualResponse, String responseStatus,
+			Contact contact) {
 		super();
 		this.responseMsg = responseMsg;
 		this.responseCode = responseCode;
 		this.actualResponse = actualResponse;
+		this.responseStatus = responseStatus;
 		this.contact = contact;
 	}
+
+
 
 	/**
 	 * Gets the response msg.
@@ -119,19 +120,31 @@ public class ContactResponse {
 		this.contact = contact;
 	}
 
-	/**
-	 * To string.
-	 *
-	 * @return the string
-	 */
+
+
+	public String getResponseStatus() {
+		return responseStatus;
+	}
+
+
+
+	public void setResponseStatus(String responseStatus) {
+		this.responseStatus = responseStatus;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "ContactResponse [responseMsg=" + responseMsg + ", responseCode=" + responseCode + ", actualResponse="
-				+ actualResponse + ", contact=" + contact + ", getResponseMsg()=" + getResponseMsg()
-				+ ", getResponseCode()=" + getResponseCode() + ", getActualResponse()=" + getActualResponse()
-				+ ", getContactResponse()=" + getContact() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
+				+ actualResponse + ", responseStatus=" + responseStatus + ", contact=" + contact + ", getResponseMsg()="
+				+ getResponseMsg() + ", getResponseCode()=" + getResponseCode() + ", getActualResponse()="
+				+ getActualResponse() + ", getContact()=" + getContact() + ", getResponseStatus()="
+				+ getResponseStatus() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
 	}
+
+	
 	
 	
 	

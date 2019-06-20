@@ -51,7 +51,20 @@ public class ContactManagementDao implements IContactManagementDao {
 	/** The get sql communication. */
 	@Value("${get.sql.communication}")
 	private String GET_SQL_COMMUNICATION;
-
+		
+	/** The delete sql identification. */
+	@Value("${delete.sql.identification}")
+	private String DELETE_SQL_IDENTIFICATION;
+	
+	/** The delete sql address. */
+	@Value("${delete.sql.address}")
+	private String DELETE_SQL_ADDRESS;
+	
+	
+	/** The delete sql communication. */
+	@Value("${delete.sql.communication}")
+	private String DELETE_SQL_COMMUNICATION;
+//1005';
 
 	/** The jdbc template. */
 	@Autowired
@@ -119,6 +132,7 @@ public class ContactManagementDao implements IContactManagementDao {
 			String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
 			contactResponse.setResponseMsg("Identification : "+responseMsg);
 			contactResponse.setResponseCode(RESPONSE_SUCCESS);
+			contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
 		}
 		catch(DataAccessException dataAccessException) {
 			logger.info("exception while storing records : "+dataAccessException.toString());
@@ -165,6 +179,7 @@ public class ContactManagementDao implements IContactManagementDao {
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
 				contactResponse.setResponseMsg("Address : "+responseMsg);
 				contactResponse.setResponseCode(RESPONSE_SUCCESS);
+				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);	
 				logger.info("Response Message for Address Details : "+contactResponse.toString());
 			}
 		}
@@ -209,6 +224,8 @@ public class ContactManagementDao implements IContactManagementDao {
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
 				contactResponse.setResponseMsg("Communication : "+responseMsg);
 				contactResponse.setResponseCode(RESPONSE_SUCCESS);
+				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
+				
 				logger.info("Response Message for Communication Details : "+contactResponse.toString());
 			}
 		}
@@ -285,15 +302,14 @@ public class ContactManagementDao implements IContactManagementDao {
 
 				logger.info("Communication info : "+communicationList.toString());
 			}
-			contactResponse.setResponseMsg(RESPONSE_FOUND);
+			contactResponse.setResponseMsg(RESPONSE_SUCCESS_STATUS);
 			contactResponse.setResponseCode(RESPONSE_SUCCESS);
 			contactResponse.setActualResponse(REC_FOUND);
 			contactResponse.setContact(contact);
 		}
 		catch(DataAccessException dataAccessException) {
-			logger.info("exception while storing records : "+dataAccessException.toString());
+			logger.info("exception while getting records : "+dataAccessException.toString());
 			contactResponse.setResponseCode(RESPONSE_INTERNAL_SERVER_ERROR);
-			contactResponse.setResponseMsg(REC_NOT_INSERTED);			
 		}
 		return contactResponse;
 	}
@@ -336,9 +352,10 @@ public class ContactManagementDao implements IContactManagementDao {
 			contactResponse.setResponseMsg(CONTACT_UPDATED);
 		}
 		catch(DataAccessException dataAccessException) {
-			contactResponse.setResponseMsg(CONTACT_NOT_UPDATED);
-			contactResponse.setResponseCode(RESPONSE_INTERNAL_SERVER_ERROR);
-			contactResponse.setResponseCode(RESPONSE_FAILED);			
+			logger.info("exception while updating records : "+dataAccessException.toString());
+			contactResponse.setResponseMsg(RESPONSE_INTERNAL_SERVER_ERROR);
+			contactResponse.setResponseCode(RESPONSE_FAILED);
+			contactResponse.setResponseStatus(RESPONSE_FAIL_STATUS);
 		}
 		return contactResponse;
 	}
@@ -370,9 +387,10 @@ public class ContactManagementDao implements IContactManagementDao {
 			String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
 			contactResponse.setResponseMsg("Identification : "+responseMsg);
 			contactResponse.setResponseCode(RESPONSE_SUCCESS);
+			contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
 		}
 		catch(DataAccessException dataAccessException) {
-			logger.info("exception while storing records : "+dataAccessException.toString());
+			logger.info("exception while updating identification records : "+dataAccessException.toString());
 			contactResponse.setResponseMsg("Identification : "+REC_NOT_UPDATED);
 			contactResponse.setResponseCode(RESPONSE_INTERNAL_SERVER_ERROR);
 		}
@@ -413,11 +431,12 @@ public class ContactManagementDao implements IContactManagementDao {
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
 				contactResponse.setResponseMsg("Address : "+responseMsg);
 				contactResponse.setResponseCode(RESPONSE_SUCCESS);
+				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
 				logger.info("Response Message for Address Details : "+contactResponse.toString());
 			}
 		}
 		catch(DataAccessException dataAccessException) {
-			logger.info("exception while storing records : "+dataAccessException.toString());
+			logger.info("exception while updating address records : "+dataAccessException.toString());
 			contactResponse.setResponseCode(RESPONSE_INTERNAL_SERVER_ERROR);
 			contactResponse.setResponseMsg("Address : "+REC_NOT_UPDATED);			
 		}
@@ -454,13 +473,54 @@ public class ContactManagementDao implements IContactManagementDao {
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
 				contactResponse.setResponseMsg("Communication : "+responseMsg);
 				contactResponse.setResponseCode(RESPONSE_SUCCESS);
+				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
 				logger.info("Response Message for Communication Details : "+contactResponse.toString());
 			}
 		}
 		catch(DataAccessException dataAccessException) {
-			logger.info("exception while storing records : "+dataAccessException.toString());
+			logger.info("exception while updating communication records : "+dataAccessException.toString());
 			contactResponse.setResponseCode(RESPONSE_INTERNAL_SERVER_ERROR);
 			contactResponse.setResponseMsg("Communication : "+REC_NOT_UPDATED);			
+		}
+		return contactResponse;
+	}
+
+	/**
+	 * Delete contact details based on id.
+	 *
+	 * @param contact the contact
+	 * @return the contact response
+	 */
+	@Override
+	public ContactResponse deleteContactDetailsBasedOnId(Contact contact) {
+		ContactResponse contactResponse = new ContactResponse();
+		BigDecimal id = contact.getIdentification().getId();
+		try {
+				String idSql = DELETE_SQL_IDENTIFICATION+id+"';commit;";
+				logger.info("sql query to remove identification info : "+idSql);				
+				jdbcTemplate.queryForList(idSql);
+				logger.info("Identification Details is deleted successfully for a given : "+id);
+				
+				//Delete Address for a given id
+				String addressSql = DELETE_SQL_ADDRESS+id+"';commit;";
+				logger.info("sql query to pull address info : "+addressSql);
+				jdbcTemplate.queryForList(addressSql);
+				logger.info("Address Details is deleted for a given : "+id);
+				
+				String commSql = DELETE_SQL_COMMUNICATION+id+"';commit;";
+				logger.info("sql query to pull communication info : "+commSql);
+				jdbcTemplate.queryForList(commSql);
+				logger.info("Communication Details deleted for a given : "+id);
+				
+				contactResponse.setResponseCode(RESPONSE_SUCCESS);
+				contactResponse.setResponseMsg(CONTACT_DELETED);
+				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
+				
+		}
+		catch(DataAccessException dataAccessException) {
+			logger.info("exception while deleting records : "+dataAccessException.toString());
+			contactResponse.setResponseCode(RESPONSE_INTERNAL_SERVER_ERROR);
+			contactResponse.setResponseMsg(REC_NOT_INSERTED);			
 		}
 		return contactResponse;
 	}
