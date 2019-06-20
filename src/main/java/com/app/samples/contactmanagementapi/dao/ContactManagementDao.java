@@ -519,8 +519,9 @@ public class ContactManagementDao implements IContactManagementDao {
 		}
 		catch(DataAccessException dataAccessException) {
 			logger.info("exception while deleting records : "+dataAccessException.toString());
-			contactResponse.setResponseCode(RESPONSE_INTERNAL_SERVER_ERROR);
-			contactResponse.setResponseMsg(REC_NOT_INSERTED);			
+			contactResponse.setResponseCode(RESPONSE_FAILED);
+			contactResponse.setResponseMsg(RESPONSE_FAIL_STATUS);
+			contactResponse.setResponseStatus(RESPONSE_FAIL_STATUS);
 		}
 		return contactResponse;
 	}
