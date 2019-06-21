@@ -55,5 +55,14 @@ public interface IContactManagementService {
 	 * @return the contact response
 	 */
 	public ContactResponse deleteContactDetailsBasedOnId(Contact contact);
+	
+	
+	/**
+	 * Check id.
+	 *
+	 * @param contact the contact
+	 * @return the contact response
+	 */
+	public ContactResponse checkId(Contact contact);
 
 }

@@ -174,6 +174,9 @@ public class DBConstans {
 	/** The Constant UPDATE_COMMUNICATION_DETAILS. */
 	public static final String UPDATE_COMMUNICATION_DETAILS = "UPDATE_COMMUNICATION_DETAILS";
 	
+	/** The Constant DELETE_CONTACT_DETAILS. */
+	public static final String DELETE_CONTACT_DETAILS = "DELETE_CONTACT_DETAILS";
+	
 	
 	/** The Constant REC_NOT_INSERTED. */
 	public static final String REC_NOT_INSERTED = "Record not inserted into database";
@@ -198,6 +201,9 @@ public class DBConstans {
 	/** The Constant CONTACT_NOT_UPDATED. */
 	public static final String CONTACT_NOT_UPDATED = "Contact Details Not Updated Successfully";
 	
+	/** The Constant CONTACT_NOT_DELETED. */
+	public static final String CONTACT_NOT_DELETED = "Contact Details Not Deleted Successfully";
+	
 	/** The Constant CONTACT_DELETED. */
 	public static final String CONTACT_DELETED = "Contact Details deleted successfully";
 	
@@ -206,6 +212,9 @@ public class DBConstans {
 	
 	/** The Constant RESPONSE_FAIL_STATUS. */
 	public static final String RESPONSE_FAIL_STATUS = "failed";
+	
+	/** The Constant NO_CONTACT_ID. */
+	public static final String NO_CONTACT_ID = "That Id does not exists";
 	
 	
 }

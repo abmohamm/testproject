@@ -200,3 +200,22 @@ end if;
 END UPDATE_ID_DETAILS;
 
 /
+--------------------------------------------------------
+--  DDL for Procedure DELETE_CONTACT_DETAILS
+--------------------------------------------------------
+set define off;
+
+CREATE OR REPLACE PROCEDURE DELETE_CONTACT_DETAILS 
+(
+  IN_CONTACT_ID IN NUMBER,
+  RESPONSE_MSG OUT VARCHAR2
+) AS 
+BEGIN
+    delete from address where address_id = in_contact_id;
+  delete from communication where com_id = in_contact_id;
+  delete from identification where contact_id = in_contact_id;
+  commit;
+  RESPONSE_MSG := 'contact details deleted successfully';  
+END DELETE_CONTACT_DETAILS;
+
+/

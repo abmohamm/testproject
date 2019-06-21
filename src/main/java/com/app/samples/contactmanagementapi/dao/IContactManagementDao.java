@@ -102,5 +102,13 @@ public interface IContactManagementDao {
 		 * @return the contact response
 		 */
 		public ContactResponse deleteContactDetailsBasedOnId(Contact contact);
+		
+		
+		/**
+		 * Gets the ids.
+		 *
+		 * @return the ids
+		 */
+		public ContactResponse checkId(Contact contact);
 
 }

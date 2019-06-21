@@ -110,22 +110,22 @@ public class ContactManagementService implements IContactManagementService{
 	@Override
 	public ContactResponse updateContactDetails(Contact contact) {
 		//ContactResponse contactResponse = new ContactResponse();
-				logger.info("Contact Details to be updated : "+contact.toString());
-				logger.info("Address size : "+contact.getAddress().size());
-				logger.info("Communication size : "+contact.getCommunication().size());
-				ContactResponse contactResponse = null;
-				try {
-					if(contact != null) {
-						contactResponse = contactManagementDao.updateContactDetails(contact);
-					}
-				}
-				catch (DataAccessException dataAccessException) {
-					contactResponse = new ContactResponse();
-					contactResponse.setResponseCode(RESPONSE_FAILED);
-					contactResponse.setResponseMsg(RESPONSE_INTERNAL_SERVER_ERROR);
-				}
+		logger.info("Contact Details to be updated : "+contact.toString());
+		logger.info("Address size : "+contact.getAddress().size());
+		logger.info("Communication size : "+contact.getCommunication().size());
+		ContactResponse contactResponse = null;
+		try {
+			if(contact != null) {
+				contactResponse = contactManagementDao.updateContactDetails(contact);
+			}
+		}
+		catch (DataAccessException dataAccessException) {
+			contactResponse = new ContactResponse();
+			contactResponse.setResponseCode(RESPONSE_FAILED);
+			contactResponse.setResponseMsg(RESPONSE_INTERNAL_SERVER_ERROR);
+		}
 
-				return contactResponse;
+		return contactResponse;
 	}
 
 	/**
@@ -145,6 +145,22 @@ public class ContactManagementService implements IContactManagementService{
 		return contactResponse;
 	}
 
-	
+	/**
+	 * Check id.
+	 *
+	 * @param contact the contact
+	 * @return the contact response
+	 */
+	@Override
+	public ContactResponse checkId(Contact contact) {
+		ContactResponse contactResponse = null;
+		if(contact!= null) {
+			contactResponse = contactManagementDao.checkId(contact);
+			logger.info("Contact Response check for a given id : "+contactResponse.isCheckId());
+		}
+		return contactResponse;
+	}
+
+
 
 }

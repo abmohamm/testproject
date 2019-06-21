@@ -66,7 +66,7 @@ public class ContactManagementController {
 		}
 		return responseEntity;
 	}
-	
+
 	/**
 	 * Gets the contact details based on id.
 	 *
@@ -80,11 +80,17 @@ public class ContactManagementController {
 		ResponseEntity<ContactResponse> responseEntity = null;
 		BigDecimal id = null;
 		try {
-			if(contact != null) {
-				id = contact.getIdentification().getId();
-				logger.info("request for given id : "+id);
-				contactResponse = contactManagementService.getContactDetailsBasedOnId(id);
-				responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.OK);
+			ContactResponse idCheck = contactManagementService.checkId(contact);
+			if(idCheck.isCheckId()) {
+				responseEntity = new ResponseEntity<ContactResponse>(idCheck,HttpStatus.NOT_FOUND);
+			}
+			else{
+				if(contact != null) {
+					id = contact.getIdentification().getId();
+					logger.info("request for given id : "+id);
+					contactResponse = contactManagementService.getContactDetailsBasedOnId(id);
+					responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.OK);
+				}
 			}
 		}
 		catch(DataAccessException dataAccessException) {
@@ -95,7 +101,7 @@ public class ContactManagementController {
 		}
 		return responseEntity;
 	}
-	
+
 	/**
 	 * Update contact.
 	 *
@@ -121,7 +127,7 @@ public class ContactManagementController {
 		}
 		return responseEntity;
 	}
-	
+
 	/**
 	 * Delete contact details based on id.
 	 *
@@ -135,11 +141,17 @@ public class ContactManagementController {
 		ResponseEntity<ContactResponse> responseEntity = null;
 		BigDecimal id = null;
 		try {
-			if(contact != null) {
-				id = contact.getIdentification().getId();
-				logger.info("request for given id : "+id);
-				contactResponse = contactManagementService.deleteContactDetailsBasedOnId(contact);
-				responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.OK);
+			ContactResponse idCheck = contactManagementService.checkId(contact);
+			if(idCheck.isCheckId()) {
+				responseEntity = new ResponseEntity<ContactResponse>(idCheck,HttpStatus.NOT_FOUND);
+			}
+			else {
+				if(contact != null) {
+					id = contact.getIdentification().getId();
+					logger.info("request for given id : "+id);
+					contactResponse = contactManagementService.deleteContactDetailsBasedOnId(contact);
+					responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.OK);
+				}
 			}
 		}
 		catch(DataAccessException dataAccessException) {
@@ -150,6 +162,6 @@ public class ContactManagementController {
 		}
 		return responseEntity;
 	}
-	
-	
+
+
 }
