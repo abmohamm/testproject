@@ -43,7 +43,7 @@ public class IdentificationRowMapper implements RowMapper<Identification>{
 		catch(DataAccessException dataAccessException) {
 			dataAccessException.printStackTrace();
 		}
-		return null;
+		return identification;
 	}
 
 }

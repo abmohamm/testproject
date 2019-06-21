@@ -528,7 +528,6 @@ public class ContactManagementDao implements IContactManagementDao {
 			contactResponse.setIdRecords(idRecords);
 			contactResponse.setResponseMsg(NO_CONTACT_ID);
 			contactResponse.setResponseCode(RESPONSE_NOT_FOUND);
-
 		}
 		else {
 			contactResponse.setCheckId(false);
