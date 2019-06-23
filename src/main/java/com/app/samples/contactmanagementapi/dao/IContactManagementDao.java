@@ -25,15 +25,6 @@ public interface IContactManagementDao {
 		public ContactResponse addContactDetails(Contact contact);
 		
 		/**
-		 * Update contact based on id.
-		 *
-		 * @param id the id
-		 * @return the contact response
-		 */
-		//update operation
-		public ContactResponse updateContactBasedOnId(int id);
-		
-		/**
 		 * Gets the contact details based on id.
 		 *
 		 * @param id the id

@@ -16,6 +16,7 @@ set define off;
 , IN_STATE IN VARCHAR2 
 , IN_ZIPCODE IN VARCHAR2 
 , IN_ADDRESS_ID IN NUMBER,
+IN_ROW_NUM IN NUMBER
 RESPONSE_MSG OUT VARCHAR2
 ) AS 
 max_id_lst_mdf_ts varchar2(20);
@@ -31,7 +32,7 @@ if in_address_id is null then
 else
   update Address
   set address_type=IN_ADDRESS_TYPE, ad_number=IN_AD_NUMBER, street=IN_STREET,unit=IN_UNIT,city=IN_CITY,states=IN_STATE,zipcode=IN_ZIPCODE,ad_lst_mdf_ts=to_char(current_date,'DD-MM-YYYY HH:MM:SS')
-    where ADDRESS_ID = IN_ADDRESS_ID;
+    where ADDRESS_ID = IN_ADDRESS_ID and rownum = IN_ROW_NUM;
     commit;
     RESPONSE_MSG := 'Record updated successfully';
 end if;

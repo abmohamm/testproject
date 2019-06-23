@@ -142,6 +142,9 @@ public class DBConstans {
 	/** The Constant IN_ADDRESS_ID. */
 	public static final String IN_ADDRESS_ID = "IN_ADDRESS_ID";
 	
+	/** The Constant IN_ROW_NUM. */
+	public static final String IN_ROW_NUM = "IN_ROW_NUM";
+	
 	/** The Constant IN_COM_TYPE. */
 	//Stored Procedure : ADD_COMMUNICATION_DETAILS input parameters to Communication Table
 	public static final String IN_COM_TYPE = "IN_COM_TYPE";

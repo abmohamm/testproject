@@ -210,11 +210,7 @@ public class ContactResponse {
 	public String toString() {
 		return "ContactResponse [responseMsg=" + responseMsg + ", responseCode=" + responseCode + ", actualResponse="
 				+ actualResponse + ", responseStatus=" + responseStatus + ", contact=" + contact + ", idRecords="
-				+ idRecords + ", checkId=" + checkId + ", getResponseMsg()=" + getResponseMsg() + ", getResponseCode()="
-				+ getResponseCode() + ", getActualResponse()=" + getActualResponse() + ", getContact()=" + getContact()
-				+ ", getResponseStatus()=" + getResponseStatus() + ", getIdRecords()=" + getIdRecords()
-				+ ", isCheckId()=" + isCheckId() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ idRecords + ", checkId=" + checkId + "]";
 	}
 	
 	

@@ -48,7 +48,7 @@ public class ContactManagementController {
 	 * @param contact the contact
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/create", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/createcontactdetails", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<ContactResponse> addContact(@RequestBody Contact contact) {
 		ResponseEntity<ContactResponse> responseEntity = null;
@@ -109,7 +109,7 @@ public class ContactManagementController {
 	 * @param contact the contact
 	 * @return the response entity
 	 */
-	@RequestMapping(value = "/update", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/updatecontactdetails", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<ContactResponse> updateContact(@RequestBody Contact contact) {
 		ResponseEntity<ContactResponse> responseEntity = null;

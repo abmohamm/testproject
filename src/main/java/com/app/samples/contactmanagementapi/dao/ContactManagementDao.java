@@ -304,23 +304,6 @@ public class ContactManagementDao implements IContactManagementDao {
 		return contactResponse;
 	}
 
-
-
-	/**
-	 * Update contact based on id.
-	 *
-	 * @param id the id
-	 * @return the contact response
-	 */
-	/* (non-Javadoc)
-	 * @see com.app.samples.contactmanagementapi.dao.IContactManagementDao#updateContactBasedOnId(int)
-	 */
-	@Override
-	public ContactResponse updateContactBasedOnId(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * Update contact details.
 	 *
@@ -400,7 +383,7 @@ public class ContactManagementDao implements IContactManagementDao {
 		Map<String,Object> simpleJdbcCallResult = null;
 		ContactResponse contactResponse = new ContactResponse();
 		List<Address> addressList = contact.getAddress();
-
+		int rowNumber = 1;
 		//Insert every Address record into Address table
 		try {
 			for(Address address : addressList) {
@@ -416,6 +399,7 @@ public class ContactManagementDao implements IContactManagementDao {
 				inParams.put(IN_STATE, address.getState());
 				inParams.put(IN_ZIPCODE, address.getZipcode());
 				inParams.put(IN_ADDRESS_ID, identification.getId());
+				inParams.put(IN_ROW_NUM, rowNumber);
 				SqlParameterSource parameterSource = new MapSqlParameterSource(inParams);
 				simpleJdbcCallResult = simpleJdbcCall.execute(parameterSource);
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
@@ -423,6 +407,7 @@ public class ContactManagementDao implements IContactManagementDao {
 				contactResponse.setResponseCode(RESPONSE_SUCCESS);
 				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
 				logger.info("Response Message for Address Details : "+contactResponse.toString());
+				rowNumber++;
 			}
 		}
 		catch(DataAccessException dataAccessException) {
