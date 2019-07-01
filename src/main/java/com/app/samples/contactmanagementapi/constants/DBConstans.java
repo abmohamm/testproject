@@ -6,6 +6,10 @@ package com.app.samples.contactmanagementapi.constants;
  */
 public class DBConstans {	
 	
+	
+	/** The Constant ROWID. */
+	public static final String ROWID = "ROWID";
+	
 	/** The Constant RESPONSE_MSG. */
 	public static final String RESPONSE_MSG = "RESPONSE_MSG";
 	
@@ -142,8 +146,8 @@ public class DBConstans {
 	/** The Constant IN_ADDRESS_ID. */
 	public static final String IN_ADDRESS_ID = "IN_ADDRESS_ID";
 	
-	/** The Constant IN_ROW_NUM. */
-	public static final String IN_ROW_NUM = "IN_ROW_NUM";
+	/** The Constant IN_ROW_ID. */
+	public static final String IN_ROW_ID = "IN_ROW_ID";
 	
 	/** The Constant IN_COM_TYPE. */
 	//Stored Procedure : ADD_COMMUNICATION_DETAILS input parameters to Communication Table

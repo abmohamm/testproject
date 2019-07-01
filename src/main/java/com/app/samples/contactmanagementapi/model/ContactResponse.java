@@ -35,6 +35,9 @@ public class ContactResponse {
 	/** The id records. */
 	@JsonProperty
 	private List<Map<String,Object>> idRecords;
+	
+	/** The row ids. */
+	private List<Map<String,Object>> rowIds;
 
 	/** The check id. */
 	private boolean checkId;
@@ -65,10 +68,11 @@ public class ContactResponse {
 	 * @param responseStatus the response status
 	 * @param contact the contact
 	 * @param idRecords the id records
+	 * @param rowIds the row ids
 	 * @param checkId the check id
 	 */
 	public ContactResponse(String responseMsg, String responseCode, String actualResponse, String responseStatus,
-			Contact contact, List<Map<String, Object>> idRecords, boolean checkId) {
+			Contact contact, List<Map<String, Object>> idRecords,List<Map<String, Object>> rowIds, boolean checkId) {
 		super();
 		this.responseMsg = responseMsg;
 		this.responseCode = responseCode;
@@ -76,6 +80,7 @@ public class ContactResponse {
 		this.responseStatus = responseStatus;
 		this.contact = contact;
 		this.idRecords = idRecords;
+		this.rowIds = rowIds;
 		this.checkId = checkId;
 	}
 
@@ -202,6 +207,15 @@ public class ContactResponse {
 	}
 
 	/**
+	 * Gets the row ids.
+	 *
+	 * @return the row ids
+	 */
+	public List<Map<String, Object>> getRowIds() {
+		return rowIds;
+	}
+
+	/**
 	 * To string.
 	 *
 	 * @return the string
@@ -210,8 +224,18 @@ public class ContactResponse {
 	public String toString() {
 		return "ContactResponse [responseMsg=" + responseMsg + ", responseCode=" + responseCode + ", actualResponse="
 				+ actualResponse + ", responseStatus=" + responseStatus + ", contact=" + contact + ", idRecords="
-				+ idRecords + ", checkId=" + checkId + "]";
+				+ idRecords + ", rowIds=" + rowIds + ", checkId=" + checkId +"]";
 	}
+
+	/**
+	 * Sets the row ids.
+	 *
+	 * @param rowIds the row ids
+	 */
+	public void setRowIds(List<Map<String, Object>> rowIds) {
+		this.rowIds = rowIds;
+	}
+
 	
 	
 	

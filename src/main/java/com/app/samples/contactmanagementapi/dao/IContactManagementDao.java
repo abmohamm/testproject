@@ -98,8 +98,30 @@ public interface IContactManagementDao {
 		/**
 		 * Gets the ids.
 		 *
+		 * @param contact the contact
 		 * @return the ids
 		 */
 		public ContactResponse checkId(Contact contact);
+		
+		
+		/**
+		 * Gets the row ids.
+		 *
+		 * @param contact the contact
+		 * @return the row ids
+		 */
+		public ContactResponse getAddressRowIds(Contact contact);
+		
+		
+		/**
+		 * Gets the communication row ids.
+		 *
+		 * @param contact the contact
+		 * @return the communication row ids
+		 */
+		public ContactResponse getCommunicationRowIds(Contact contact);
+		
+		
+	
 
 }

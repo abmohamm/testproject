@@ -52,10 +52,19 @@ public class ContactManagementDao implements IContactManagementDao {
 	@Value("${get.sql.communication}")
 	private String GET_SQL_COMMUNICATION;
 
+	/** The get ids. */
 	@Value("${get.ids}")
 	private String GET_IDS;
-	//1005';
 
+	/** The get row ids. */
+	@Value("${get.address.rowids}")
+	private String GET_ADDRESS_ROW_IDS;
+	
+	/** The get communication row ids. */
+	@Value("${get.communication.rowids}")
+	private String GET_COMMUNICATION_ROW_IDS;
+	
+	
 	/** The jdbc template. */
 	@Autowired
 	JdbcTemplate jdbcTemplate; 
@@ -383,7 +392,8 @@ public class ContactManagementDao implements IContactManagementDao {
 		Map<String,Object> simpleJdbcCallResult = null;
 		ContactResponse contactResponse = new ContactResponse();
 		List<Address> addressList = contact.getAddress();
-		int rowNumber = 1;
+		List<Map<String,Object>> rowIdsList = getAddressRowIds(contact).getRowIds();
+		int rowId = 0;
 		//Insert every Address record into Address table
 		try {
 			for(Address address : addressList) {
@@ -399,7 +409,8 @@ public class ContactManagementDao implements IContactManagementDao {
 				inParams.put(IN_STATE, address.getState());
 				inParams.put(IN_ZIPCODE, address.getZipcode());
 				inParams.put(IN_ADDRESS_ID, identification.getId());
-				inParams.put(IN_ROW_NUM, rowNumber);
+				inParams.put(IN_ROW_ID, rowIdsList.get(rowId).get(ROWID));
+				logger.info("Record with Row Id to be updated : "+rowIdsList.get(rowId).get(ROWID));
 				SqlParameterSource parameterSource = new MapSqlParameterSource(inParams);
 				simpleJdbcCallResult = simpleJdbcCall.execute(parameterSource);
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
@@ -407,7 +418,7 @@ public class ContactManagementDao implements IContactManagementDao {
 				contactResponse.setResponseCode(RESPONSE_SUCCESS);
 				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
 				logger.info("Response Message for Address Details : "+contactResponse.toString());
-				rowNumber++;
+				rowId++;
 			}
 		}
 		catch(DataAccessException dataAccessException) {
@@ -431,7 +442,8 @@ public class ContactManagementDao implements IContactManagementDao {
 		Map<String,Object> simpleJdbcCallResult = null;
 		ContactResponse contactResponse = new ContactResponse();
 		List<Communication> communicationList = contact.getCommunication();
-
+		List<Map<String,Object>> rowIdsList = getCommunicationRowIds(contact).getRowIds();
+		int rowId = 0;
 		//Insert every Address record into Communication table
 		try {
 			for(Communication communication : communicationList) {
@@ -443,6 +455,8 @@ public class ContactManagementDao implements IContactManagementDao {
 				inParams.put(IN_VALUE, communication.getValue());
 				inParams.put(IN_PREFERRED, communication.getPreferred());
 				inParams.put(IN_COM_ID,identification.getId());
+				inParams.put(IN_ROW_ID,rowIdsList.get(rowId).get(ROWID));
+				logger.info("Record with Row Id to be updated : "+rowIdsList.get(rowId).get(ROWID));
 				SqlParameterSource parameterSource = new MapSqlParameterSource(inParams);
 				simpleJdbcCallResult = simpleJdbcCall.execute(parameterSource);
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
@@ -450,6 +464,7 @@ public class ContactManagementDao implements IContactManagementDao {
 				contactResponse.setResponseCode(RESPONSE_SUCCESS);
 				contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);
 				logger.info("Response Message for Communication Details : "+contactResponse.toString());
+				rowId++;
 			}
 		}
 		catch(DataAccessException dataAccessException) {
@@ -493,6 +508,12 @@ public class ContactManagementDao implements IContactManagementDao {
 		return contactResponse;
 	}
 
+	/**
+	 * Check id.
+	 *
+	 * @param contact the contact
+	 * @return the contact response
+	 */
 	@Override
 	public ContactResponse checkId(Contact contact) {
 		ContactResponse contactResponse = new ContactResponse();
@@ -517,6 +538,42 @@ public class ContactManagementDao implements IContactManagementDao {
 		else {
 			contactResponse.setCheckId(false);
 		}
+		return contactResponse;
+	}
+	
+	/**
+	 * Gets the row ids.
+	 *
+	 * @param contact the contact
+	 * @return the row ids
+	 */
+	@Override
+	public ContactResponse getAddressRowIds(Contact contact) {
+		ContactResponse contactResponse = new ContactResponse();
+		BigDecimal id = contact.getIdentification().getId();
+		logger.info("Id passed to fetch Row Id's is  : "+id);
+		String sql = GET_ADDRESS_ROW_IDS+id+"'";
+		List<Map<String,Object>> rowIdsList = jdbcTemplate.queryForList(sql);
+		logger.info("Address Row Ids fetched for a given id are : "+rowIdsList);
+		contactResponse.setRowIds(rowIdsList);	
+		return contactResponse;
+	}
+
+	/**
+	 * Gets the communication row ids.
+	 *
+	 * @param contact the contact
+	 * @return the communication row ids
+	 */
+	@Override
+	public ContactResponse getCommunicationRowIds(Contact contact) {
+		ContactResponse contactResponse = new ContactResponse();
+		BigDecimal id = contact.getIdentification().getId();
+		logger.info("Id passed to fetch Row Id's is  : "+id);
+		String sql = GET_COMMUNICATION_ROW_IDS+id+"'";
+		List<Map<String,Object>> rowIdsList = jdbcTemplate.queryForList(sql);
+		logger.info("Communication Row Ids fetched for a given id are : "+rowIdsList);
+		contactResponse.setRowIds(rowIdsList);	
 		return contactResponse;
 	}
 }

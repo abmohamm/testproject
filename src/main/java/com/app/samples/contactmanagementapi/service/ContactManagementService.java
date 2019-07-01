@@ -160,7 +160,4 @@ public class ContactManagementService implements IContactManagementService{
 		}
 		return contactResponse;
 	}
-
-
-
 }
