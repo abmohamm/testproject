@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -23,6 +25,8 @@ import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
 import com.app.samples.contactmanagementapi.model.Identification;
 import com.app.samples.contactmanagementapi.rowmapper.IdentificationRowMapper;
+
+import oracle.sql.ROWID;
 
 import static com.app.samples.contactmanagementapi.constants.DBConstans.*;
 
@@ -394,12 +398,16 @@ public class ContactManagementDao implements IContactManagementDao {
 		List<Address> addressList = contact.getAddress();
 		List<Map<String,Object>> rowIdsList = getAddressRowIds(contact).getRowIds();
 		int rowId = 0;
+		ROWID rowNum = null;
 		//Insert every Address record into Address table
 		try {
 			for(Address address : addressList) {
 				logger.info("Address Details : "+address.toString());
 				identification = contact.getIdentification();
 				Map<String,Object> inParams = new HashMap<String,Object>();
+				rowNum = (ROWID) rowIdsList.get(rowId).get(ROWID);
+				String addressRowId = DatatypeConverter.printHexBinary(rowNum.getBytes());
+				logger.info("Address Row Id to be updated is : "+addressRowId);
 				simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName(UPDATE_ADDRESS_DETAILS);
 				inParams.put(IN_ADDRESS_TYPE, address.getType());
 				inParams.put(IN_AD_NUMBER, address.getNumber());
@@ -409,8 +417,7 @@ public class ContactManagementDao implements IContactManagementDao {
 				inParams.put(IN_STATE, address.getState());
 				inParams.put(IN_ZIPCODE, address.getZipcode());
 				inParams.put(IN_ADDRESS_ID, identification.getId());
-				inParams.put(IN_ROW_ID, rowIdsList.get(rowId).get(ROWID));
-				logger.info("Record with Row Id to be updated : "+rowIdsList.get(rowId).get(ROWID));
+				inParams.put(IN_ROW_ID, rowNum);
 				SqlParameterSource parameterSource = new MapSqlParameterSource(inParams);
 				simpleJdbcCallResult = simpleJdbcCall.execute(parameterSource);
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
@@ -444,19 +451,22 @@ public class ContactManagementDao implements IContactManagementDao {
 		List<Communication> communicationList = contact.getCommunication();
 		List<Map<String,Object>> rowIdsList = getCommunicationRowIds(contact).getRowIds();
 		int rowId = 0;
+		ROWID rowNum = null;		
 		//Insert every Address record into Communication table
 		try {
 			for(Communication communication : communicationList) {
 				logger.info("Communication Details : "+communication.toString());
 				identification = contact.getIdentification();
 				Map<String,Object> inParams = new HashMap<String,Object>();
+				rowNum = (ROWID) rowIdsList.get(rowId).get(ROWID);
+				String commRowId = DatatypeConverter.printHexBinary(rowNum.getBytes());
+				logger.info("Communication Row Id to be updated is : "+commRowId);
 				simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName(UPDATE_COMMUNICATION_DETAILS);
 				inParams.put(IN_COM_TYPE, communication.getType());
 				inParams.put(IN_VALUE, communication.getValue());
 				inParams.put(IN_PREFERRED, communication.getPreferred());
 				inParams.put(IN_COM_ID,identification.getId());
-				inParams.put(IN_ROW_ID,rowIdsList.get(rowId).get(ROWID));
-				logger.info("Record with Row Id to be updated : "+rowIdsList.get(rowId).get(ROWID));
+				inParams.put(IN_ROW_ID,rowNum);
 				SqlParameterSource parameterSource = new MapSqlParameterSource(inParams);
 				simpleJdbcCallResult = simpleJdbcCall.execute(parameterSource);
 				String responseMsg = (String)simpleJdbcCallResult.get(RESPONSE_MSG);
