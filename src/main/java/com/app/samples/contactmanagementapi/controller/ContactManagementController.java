@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
 import com.app.samples.contactmanagementapi.service.IContactManagementService;
+import com.app.samples.contactmanagementapi.util.ContactManagementApiUtil;
+
 import static com.app.samples.contactmanagementapi.constants.DBConstans.*;
 
 
@@ -93,6 +95,7 @@ public class ContactManagementController {
 					responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.OK);
 				}
 			}
+			ContactManagementApiUtil.createJson(contactResponse.getContact());
 		}
 		catch(DataAccessException dataAccessException) {
 			contactResponse = new ContactResponse();
