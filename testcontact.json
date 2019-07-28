@@ -1,36 +1,28 @@
 {
-  "Identification" : {
-    "Id" : 107,
-    "FirstName" : "test_fname_updated",
-    "LastName" : "test_lname_updated",
-    "DOB" : "test_DOB_updated",
-    "Gender" : "test_M_updated",
-    "Title" : "test_title_updated"
+ "Identification": {
+  "FirstName": "Bob",
+  "LastName": "Frederick",
+  "DOB": "06/21/1980",
+  "Gender": "M",
+  "Title": "Manager"
+ },
+ "Address": [{
+  "type ": "home",
+  "number": 1234,
+  "street": "blah blah St",
+  "Unit": "1 a",
+  "City": "Somewhere",
+  "State": "WV",
+  "zipcode": "12345"
+ }],
+ "Communication": [{
+   "type": "email",
+   "value": "bfe@sample.com",
+     "preferred" : "true"
   },
-  "Address" : [ {
-    "Type" : "home",
-    "Number" : 1293,
-    "Street" : "test_home_street_updated",
-    "Unit" : "test_home_Unit_updated",
-    "City" : "test_home_city_updated",
-    "State" : "test_home_state_updated",
-    "Zipcode" : "test_home_zipcode_updated"
-  }, {
-    "Type" : "office",
-    "Number" : 6092,
-    "Street" : "test_ofc_street",
-    "Unit" : "test_ofc_unit",
-    "City" : "test_ofc_city",
-    "State" : "test_ofc_state",
-    "Zipcode" : "test_ofc_zipcode"
-  } ],
-  "Communication" : [ {
-    "Type" : "cell_test_new",
-    "Value" : "590-423-5567_test",
-    "Preferred" : null
-  }, {
-    "Type" : "email_test_new",
-    "Value" : "VPATABAL_new@sample.com_test",
-    "Preferred" : "true"
-  } ]
+  {
+   "type": "cell",
+   "value": "304-555-8282"
+  }
+ ]
 }
