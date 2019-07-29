@@ -7,12 +7,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class ContactManagementApiApplication.
  */
 @SpringBootApplication
 @Configuration
+@EnableSwagger2
 @ComponentScan(basePackages = "com.app.samples.contactmanagementapi")
 @EnableConfigurationProperties
 public class ContactManagementApiApplication {

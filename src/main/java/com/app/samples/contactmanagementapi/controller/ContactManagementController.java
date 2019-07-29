@@ -1,5 +1,7 @@
 package com.app.samples.contactmanagementapi.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
@@ -165,6 +168,21 @@ public class ContactManagementController {
 			responseEntity = new ResponseEntity<ContactResponse>(contactResponse,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return responseEntity;
+	}
+	
+	@RequestMapping(value="/uploadFile", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> uploadExcelFile(@RequestBody MultipartFile multipartFile){
+		InputStream inputStream = null;
+		try {
+			logger.info("File name is : "+multipartFile.getOriginalFilename());
+			inputStream = multipartFile.getInputStream();
+			contactManagementService.readExcelAndSaveIt(inputStream);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 

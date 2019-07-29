@@ -1,8 +1,16 @@
 package com.app.samples.contactmanagementapi.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -10,6 +18,8 @@ import org.springframework.stereotype.Service;
 import com.app.samples.contactmanagementapi.dao.ContactManagementDao;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
+import com.app.samples.contactmanagementapi.model.Employee;
+
 import static com.app.samples.contactmanagementapi.constants.DBConstans.*;
 
 
@@ -159,5 +169,64 @@ public class ContactManagementService implements IContactManagementService{
 			logger.info("Contact Response check for a given id : "+contactResponse.isCheckId());
 		}
 		return contactResponse;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void readExcelAndSaveIt(InputStream inputStream) {
+		XSSFWorkbook xssfWorkbook = null;
+		XSSFSheet xssfSheet = null;
+		Row row = null;
+//		Cell cell = null;
+		Employee employee = null;
+		Iterator<Row> rowIterator = null;
+	//	Iterator<Cell> cellIterator = null;
+		try {
+			if(inputStream != null) {
+				xssfWorkbook = new XSSFWorkbook(inputStream);
+				xssfSheet = xssfWorkbook.getSheetAt(0);
+			}
+			rowIterator = xssfSheet.iterator();
+			while(rowIterator.hasNext()) {
+				employee = new Employee();
+				row = rowIterator.next();//ignore header information
+				row = rowIterator.next();				
+//				logger.info("cell length : "+row.cellIterator());
+				employee.setEmployeeid((int)row.getCell(0).getNumericCellValue());
+				employee.setFirstName((String)row.getCell(1).getStringCellValue());
+				employee.setLastName((String)row.getCell(2).getStringCellValue());
+				employee.setEmail((String)row.getCell(3).getStringCellValue());
+				employee.setPhoneNumber((String)row.getCell(4).getStringCellValue());
+				employee.setHireDate((Date)row.getCell(5).getDateCellValue());
+				employee.setJobId((String)row.getCell(6).getStringCellValue());
+				employee.setSalary((int)row.getCell(7).getNumericCellValue());
+				employee.setCommissionPct((int)row.getCell(8).getNumericCellValue());
+				employee.setManagerId((int)row.getCell(9).getNumericCellValue());
+				employee.setDepartmentId((int)row.getCell(10).getNumericCellValue());
+				
+				//Save it to the database
+				contactManagementDao.addEmployee(employee);
+				
+//				cellIterator = row.cellIterator();
+//				while(cellIterator.hasNext()) {
+//					cell = cellIterator.next();
+//					switch(cell.getCellType()) {
+//						case Cell.CELL_TYPE_STRING :
+//							logger.info("cell value : "+"");
+//						case Cell.CELL_TYPE_NUMERIC : 
+//							logger.info("cell value : "+"");
+//					}
+//					logger.info("Cell value : "+cell);
+//				}
+			}
+			inputStream.close();
+		}
+		catch(IOException ioException) {
+			ioException.printStackTrace();
+		}
+		catch(Exception exception) {
+			exception.printStackTrace();
+		}
+
 	}
 }

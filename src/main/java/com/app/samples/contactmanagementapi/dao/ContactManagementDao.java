@@ -1,11 +1,14 @@
 package com.app.samples.contactmanagementapi.dao;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.bind.DatatypeConverter;
@@ -20,6 +23,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 import com.app.samples.contactmanagementapi.model.Address;
+import com.app.samples.contactmanagementapi.model.Employee;
 import com.app.samples.contactmanagementapi.model.Communication;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
@@ -585,5 +589,85 @@ public class ContactManagementDao implements IContactManagementDao {
 		logger.info("Communication Row Ids fetched for a given id are : "+rowIdsList);
 		contactResponse.setRowIds(rowIdsList);	
 		return contactResponse;
+	}
+	
+	/**
+	 * Adds the employee.
+	 *
+	 * @param employee the employee
+	 * @throws Exception the exception
+	 */
+	public void addEmployee(Employee employee) throws Exception {
+
+		Timestamp timestamp = null;
+		Date hireDate = null;
+		int employeeId,salary,commissionPct,managerId,departmentId;
+		String firstName,lastName,email,phoneNumber,jobId;
+		
+		
+		try {
+			timestamp = getCurrentTimestamp();
+			logger.info("current  time : "+timestamp);
+
+			String sql = "insert into employees (EMPLOYEE_ID,FIRST_NAME, LAST_NAME, EMAIL,PHONE_NUMBER,HIRE_DATE,JOB_ID,SALARY,COMMISSION_PCT,MANAGER_ID,DEPARTMENT_ID,CREAT_UPD_DATE)"
+					+ "values (?,?,?,?,?,?,?,?,?,?,?,?)";
+			
+			if(employee != null) {
+				employeeId = employee.getEmployeeid();
+				firstName = employee.getFirstName();
+				lastName = employee.getLastName();
+				email = employee.getEmail();
+				phoneNumber = employee.getPhoneNumber();
+				if(employee.getHireDate() != null) {
+					hireDate = new Date(employee.getHireDate().getTime());
+				}
+				else {
+					hireDate = getCurrentDate();
+				}
+				jobId = employee.getJobId();
+				salary = employee.getSalary();
+				commissionPct = employee.getCommissionPct();
+				managerId = employee.getManagerId();
+				departmentId = employee.getDepartmentId();
+							
+				jdbcTemplate.update(sql,new Object[] {employeeId,firstName,lastName,email,phoneNumber,hireDate,jobId,salary,commissionPct,managerId,departmentId,timestamp});
+			}			
+			logger.info("Employee record with "+employee.getEmployeeid()+" is inserted successfully ");
+		}
+		catch(DataAccessException dataAccessException) {
+			logger.log(Level.SEVERE, "exception while adding employees", dataAccessException.getMessage());
+		}
+		catch(Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+	
+	public Timestamp getCurrentTimestamp() {
+		Timestamp timeStamp = null;
+		try {
+			java.util.Date date = new java.util.Date();
+			long time = date.getTime();
+			timeStamp = new Timestamp(time);
+		}
+		catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		logger.info("Current Timestamp is : "+timeStamp);
+		return timeStamp;		
+	}
+	
+	public Date getCurrentDate() {
+		Date date = null;
+		Calendar calendar = null;
+		try {
+			calendar = Calendar.getInstance();
+			date = new Date(calendar.getTime().getTime());
+		}
+		catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		logger.info("Current Date is : "+date);
+		
+		return date;
 	}
 }

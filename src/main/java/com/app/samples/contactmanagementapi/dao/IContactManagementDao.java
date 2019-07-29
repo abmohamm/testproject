@@ -6,6 +6,7 @@ import com.app.samples.contactmanagementapi.model.Address;
 import com.app.samples.contactmanagementapi.model.Communication;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
+import com.app.samples.contactmanagementapi.model.Employee;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -120,6 +121,14 @@ public interface IContactManagementDao {
 		 * @return the communication row ids
 		 */
 		public ContactResponse getCommunicationRowIds(Contact contact);
+		
+		/**
+		 * Adds the employee.
+		 *
+		 * @param employee the employee
+		 * @throws Exception the exception
+		 */
+		public void addEmployee(Employee employee) throws Exception;
 		
 		
 	

@@ -1,5 +1,6 @@
 package com.app.samples.contactmanagementapi.service;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 
 import com.app.samples.contactmanagementapi.model.Contact;
@@ -64,4 +65,11 @@ public interface IContactManagementService {
 	 * @return the contact response
 	 */
 	public ContactResponse checkId(Contact contact);
-}
+	
+	/**
+	 * Read excel and save it.
+	 *
+	 * @param inputStream the input stream
+	 */
+	public void readExcelAndSaveIt(InputStream inputStream);
+	}
