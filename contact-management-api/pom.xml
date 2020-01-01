@@ -135,6 +135,9 @@
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<mainClass>com.app.samples.contactmanagementapi.ContactManagementApiApplication</mainClass>
+					</configuration>
 				</plugin>
 
 				<plugin>

@@ -1,9 +1,11 @@
 package com.app.samples.contactmanagementapi.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.app.samples.contactmanagementapi.model.Address;
 import com.app.samples.contactmanagementapi.model.Communication;
+import com.app.samples.contactmanagementapi.model.ConferenceStudent;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
 import com.app.samples.contactmanagementapi.model.Employee;
@@ -129,6 +131,14 @@ public interface IContactManagementDao {
 		 * @throws Exception the exception
 		 */
 		public void addEmployee(Employee employee) throws Exception;
+		
+		/**
+		 * Adds the conference students information.
+		 *
+		 * @param conferenceStudentsList the conference students list
+		 * @throws Exception the exception
+		 */
+		public ContactResponse addConferenceStudentsInformation(List<ConferenceStudent> conferenceStudentsList) throws Exception;
 		
 		
 	

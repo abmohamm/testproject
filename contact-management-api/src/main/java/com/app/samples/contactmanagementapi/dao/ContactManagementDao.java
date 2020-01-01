@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import com.app.samples.contactmanagementapi.model.Address;
 import com.app.samples.contactmanagementapi.model.Employee;
 import com.app.samples.contactmanagementapi.model.Communication;
+import com.app.samples.contactmanagementapi.model.ConferenceStudent;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
 import com.app.samples.contactmanagementapi.model.Identification;
@@ -669,5 +670,44 @@ public class ContactManagementDao implements IContactManagementDao {
 		logger.info("Current Date is : "+date);
 		
 		return date;
+	}
+
+	@Override
+	public ContactResponse addConferenceStudentsInformation(List<ConferenceStudent> conferenceStudentsList) throws DataAccessException {
+		Timestamp timeStamp = null;
+		ContactResponse contactResponse = new ContactResponse();
+		String firstName,lastName,university,country,comments;
+		String sql = "";
+		
+		try {
+			timeStamp = getCurrentTimestamp();
+			logger.info("current  time : "+timeStamp);
+			
+			if(conferenceStudentsList != null) {
+				for(ConferenceStudent conferenceStudent : conferenceStudentsList) {
+					firstName = (conferenceStudent.getFirstName()==null)?"NA":conferenceStudent.getFirstName();
+					lastName = (conferenceStudent.getLastName()==null)?"NA":conferenceStudent.getLastName();
+					university = (conferenceStudent.getUniversity()==null)?"NA":conferenceStudent.getUniversity();
+					country = (conferenceStudent.getCountry()==null)?"NA":conferenceStudent.getCountry();
+					comments = (conferenceStudent.getComments()==null)?"NA":conferenceStudent.getComments();
+					sql = "insert into conference_student(firstname,lastname,university,country,comments,creat_upd_date) values (?,?,?,?,?,?)";
+					jdbcTemplate.update(sql,new Object[] {firstName,lastName,university,country,comments,timeStamp});
+					logger.info("Conference Student record is inserted successfully "+timeStamp);
+				}
+			}
+			contactResponse.setResponseMsg("Conference Studens Information stored successfully");
+			contactResponse.setResponseCode(RESPONSE_SUCCESS);
+			contactResponse.setResponseStatus(RESPONSE_SUCCESS_STATUS);			
+		}
+		catch(DataAccessException dataAccessException) {
+			logger.info("Exception while adding Conference Studens Information : "+dataAccessException.toString());
+			contactResponse.setResponseCode(RESPONSE_FAILED);
+			contactResponse.setResponseMsg(CONTACT_NOT_DELETED);
+			contactResponse.setResponseStatus(RESPONSE_FAIL_STATUS);
+		}
+		catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		return contactResponse;		
 	}
 }

@@ -27,8 +27,6 @@ import java.util.logging.Logger;
 //@ApplicationScoped
 public class Employee {
 	
-	
-
 	/** The logger. */
 	Logger logger = Logger.getLogger(Employee.class.getName());
 	

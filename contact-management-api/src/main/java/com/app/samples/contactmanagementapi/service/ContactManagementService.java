@@ -3,8 +3,10 @@ package com.app.samples.contactmanagementapi.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,6 +18,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.app.samples.contactmanagementapi.dao.ContactManagementDao;
+import com.app.samples.contactmanagementapi.model.ConferenceStudent;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
 import com.app.samples.contactmanagementapi.model.Employee;
@@ -228,5 +231,65 @@ public class ContactManagementService implements IContactManagementService{
 			exception.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public ContactResponse readConferenceStudentExcel(InputStream inputStream) throws IOException, DataAccessException{
+		XSSFWorkbook xssfWorkbook = null;
+		XSSFSheet xssfSheet = null;
+		ContactResponse contactResponse = new ContactResponse();
+		Row row = null;
+//		Cell cell = null;
+		ConferenceStudent conferenceStudent = null;
+		Iterator<Row> rowIterator = null;
+		List<ConferenceStudent> conferenceStudentsList = new ArrayList<>();
+	//	Iterator<Cell> cellIterator = null;
+		try {
+			if(inputStream != null) {
+				xssfWorkbook = new XSSFWorkbook(inputStream);
+				xssfSheet = xssfWorkbook.getSheetAt(0);
+			}
+			rowIterator = xssfSheet.iterator();
+			while(rowIterator.hasNext()) {
+				conferenceStudent = new ConferenceStudent();
+				row = rowIterator.next();//ignore header information
+				row = rowIterator.next();				
+//				logger.info("cell length : "+row.cellIterator());
+				conferenceStudent.setFirstName((String)row.getCell(0).getStringCellValue());
+				conferenceStudent.setLastName((String)row.getCell(1).getStringCellValue());
+				conferenceStudent.setUniversity((String)row.getCell(2).getStringCellValue());
+				conferenceStudent.setCountry((String)row.getCell(3).getStringCellValue());
+				conferenceStudent.setComments((String)row.getCell(4).getStringCellValue());
+				conferenceStudentsList.add(conferenceStudent);				
+			}
+			addConferenceStudentsInformation(conferenceStudentsList);
+			inputStream.close();
+		}
+		catch(IOException ioException) {
+			ioException.printStackTrace();
+		}
+		catch(DataAccessException dataAccessException) {
+			dataAccessException.printStackTrace();
+		}
+		catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		return contactResponse;
+	}
+
+	@Override
+	public ContactResponse addConferenceStudentsInformation(List<ConferenceStudent> conferenceStudentsList) throws DataAccessException {
+		ContactResponse contactResponse = null;
+		try {
+			contactResponse = contactManagementDao.addConferenceStudentsInformation(conferenceStudentsList);
+		}
+		catch(DataAccessException dataAccessException) {
+			dataAccessException.printStackTrace();
+		}
+		catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		return contactResponse;
+		
 	}
 }

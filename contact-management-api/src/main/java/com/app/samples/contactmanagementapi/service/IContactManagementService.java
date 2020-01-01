@@ -1,8 +1,16 @@
+/*
+ * 
+ */
 package com.app.samples.contactmanagementapi.service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.List;
 
+import org.springframework.dao.DataAccessException;
+
+import com.app.samples.contactmanagementapi.model.ConferenceStudent;
 import com.app.samples.contactmanagementapi.model.Contact;
 import com.app.samples.contactmanagementapi.model.ContactResponse;
 
@@ -72,4 +80,22 @@ public interface IContactManagementService {
 	 * @param inputStream the input stream
 	 */
 	public void readExcelAndSaveIt(InputStream inputStream);
+	
+	/**
+	 * Adds the conference student.
+	 *
+	 * @param inputStream the input stream
+	 * @return the list
+	 */
+	public ContactResponse readConferenceStudentExcel(InputStream inputStream) throws IOException, DataAccessException;
+	
+	/**
+	 * Adds the conference students information.
+	 *
+	 * @param conferenceStudentsList the conference students list
+	 * @throws Exception the exception
+	 */
+	public ContactResponse addConferenceStudentsInformation(List<ConferenceStudent> conferenceStudentsList) throws Exception;
+	
+	
 	}

@@ -221,7 +221,22 @@ public class DBConstans {
 	public static final String RESPONSE_FAIL_STATUS = "failed";
 	
 	/** The Constant NO_CONTACT_ID. */
-	public static final String NO_CONTACT_ID = "That Id does not exists";
+	public static final String NO_CONTACT_ID = "That Id does not exists";	
+	
+	/** The Constant FIRSTNAME. */
+	public static final String FIRSTNAME = "FIRSTNAME";
+	
+	/** The Constant LASTNAME. */
+	public static final String LASTNAME = "LASTNAME";
+	
+	/** The Constant UNIVERSITY. */
+	public static final String UNIVERSITY = "UNIVERSITY";
+	
+	/** The Constant COUNTRY. */
+	public static final String COUNTRY = "COUNTRY";
+	
+	/** The Constant COMMENTS. */
+	public static final String COMMENTS = "COMMENTS";
 	
 	
 }
